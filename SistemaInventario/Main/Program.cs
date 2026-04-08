@@ -4,6 +4,19 @@ namespace SistemaInventario;
 
 class Program
 {
+    // metodo helper: le pregunta al usuario un numero y lo valida.
+    // si escribe algo que no es numero, avisa y devuelve false.
+    static bool LeerEntero(string mensaje, out int resultado)
+    {
+        Console.Write(mensaje);
+        if (!int.TryParse(Console.ReadLine(), out resultado))
+        {
+            Console.WriteLine("Error: eso no es un número válido.\n");
+            return false;
+        }
+        return true;
+    }
+
     static void Main(string[] args)
     {
         Inventario inventario = new Inventario();
@@ -18,22 +31,27 @@ class Program
             Console.WriteLine("5. Buscar producto");
             Console.WriteLine("6. Salir");
             Console.Write("Ingrese una opcion: ");
-            opcion = int.Parse(Console.ReadLine());
+
+            if (!int.TryParse(Console.ReadLine(), out opcion))
+            {
+                Console.WriteLine("Error: ingresa un número del 1 al 6.\n");
+                continue; // vuelve al inicio del do-while
+            }
+
             Console.WriteLine("\n");
             switch (opcion)
             {
                 case 1:
-                    Console.Write("Ingrese el id: ");
-                    int id = int.Parse(Console.ReadLine());
+                    // ya no se pide el id, el sistema lo asigna solo
                     Console.Write("Ingrese el nombre: ");
-                    string nombre = Console.ReadLine();
+                    string nombre = Console.ReadLine() ?? "";
                     Console.Write("Ingrese el tipo: ");
-                    string tipo = Console.ReadLine();
-                    Console.Write("Ingrese el precio: ");
-                    int precio = int.Parse(Console.ReadLine());
-                    Console.Write("Ingrese la cantidad: ");
-                    int cantidad = int.Parse(Console.ReadLine());
-                    inventario.AgregarProd(new Productos(id, nombre, tipo, precio, cantidad));
+                    string tipo = Console.ReadLine() ?? "";
+
+                    if (!LeerEntero("Ingrese el precio: ", out int precio)) break;
+                    if (!LeerEntero("Ingrese la cantidad: ", out int cantidad)) break;
+
+                    inventario.AgregarProd(nombre, tipo, precio, cantidad);
                     Console.WriteLine("Producto agregado correctamente\n");
                     break;
 
@@ -44,12 +62,10 @@ class Program
 
                 case 3:
                     Console.WriteLine("----- Actualizar Producto ----- \n");
-                    Console.Write("Ingrese el id: ");
-                    int id2 = int.Parse(Console.ReadLine());
-                    Console.Write("Ingrese el nuevo precio: ");
-                    int precio2 = int.Parse(Console.ReadLine());
-                    Console.Write("Ingrese la nueva cantidad: ");
-                    int cantidad2 = int.Parse(Console.ReadLine());
+                    if (!LeerEntero("Ingrese el id: ", out int id2)) break;
+                    if (!LeerEntero("Ingrese el nuevo precio: ", out int precio2)) break;
+                    if (!LeerEntero("Ingrese la nueva cantidad: ", out int cantidad2)) break;
+
                     Console.WriteLine("\n");
                     inventario.ActualizarProd(new Productos(id2, "", "", precio2, cantidad2));
                     Console.WriteLine("Producto actualizado correctamente\n");
@@ -57,8 +73,8 @@ class Program
 
                 case 4:
                     Console.WriteLine("----- Eliminar Producto ----- \n");
-                    Console.Write("Ingrese el id: ");
-                    int id3 = int.Parse(Console.ReadLine());
+                    if (!LeerEntero("Ingrese el id: ", out int id3)) break;
+
                     Console.WriteLine("\n");
                     inventario.EliminarProd(new Productos(id3, "", "", 0, 0));
                     Console.WriteLine("Producto eliminado correctamente\n");
@@ -66,8 +82,8 @@ class Program
 
                 case 5:
                     Console.WriteLine("----- Buscar Producto ----- \n");
-                    Console.Write("Ingrese el id: ");
-                    int id4 = int.Parse(Console.ReadLine());
+                    if (!LeerEntero("Ingrese el id: ", out int id4)) break;
+
                     Console.WriteLine("\n");
                     inventario.BuscarProd(id4);
                     break;
