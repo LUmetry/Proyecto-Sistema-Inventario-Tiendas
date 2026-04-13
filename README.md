@@ -1,47 +1,47 @@
-# 🏪 Sistema de Inventario de Tiendas — C#
+#  Sistema de Inventario de Tiendas — C#
 
-## Estado actual del proyecto
+## Estado del proyecto — Entrega final
 
-Esta es una versión **actualizada y presentable** del sistema de inventario desarrollado en C# como aplicación de consola, con mejoras aplicadas respecto a la entrega anterior.
+Este es el sistema de inventario desarrollado en C# como aplicación de consola para la materia Programación 1.
 
-El sistema actualmente permite:
+El sistema permite:
 
-- Agregar productos (con validación de ID duplicado)
-- Mostrar todos los productos en inventario
-- Actualizar precio y cantidad de un producto
+- Agregar productos (electrónicos o alimenticios)
+- Mostrar todos los productos o filtrar por tipo
+- Actualizar precio y cantidad de un producto por ID
 - Eliminar un producto por ID
 - Buscar un producto por ID
-- Menú de navegación en consola
+- Guardar el inventario en un archivo `.txt` al salir y cargarlo automáticamente al iniciar
 
 ## Estructura del proyecto
 
 ```
 SistemaInventario/
 ├── Main/
-│   └── Program.cs          # Punto de entrada y menú principal
+│   └── Program.cs               # Punto de entrada y menú principal
 ├── Models/
-│   └── Productos.cs        # Clase que representa un producto
+│   ├── Productos.cs             # Clase base de producto
+│   ├── ProductoElectronico.cs   # Subclase con garantía (herencia + polimorfismo)
+│   └── ProductoAlimenticio.cs   # Subclase con fecha de vencimiento (herencia + polimorfismo)
 └── services/
-    └── Inventario.cs       # Lógica de gestión del inventario (agregar, eliminar, etc.)
+    └── Inventario.cs            # Lógica de gestión: agregar, eliminar, actualizar, buscar, guardar/cargar
 ```
 
-## Mejoras implementadas
+## Funcionalidades implementadas
 
-1.  **Autoincremento de ID** — El sistema asigna el ID automáticamente. El usuario ya no lo ingresa manualmente, eliminando el riesgo de IDs repetidos.
+1. **Autoincremento de ID** — El sistema asigna el ID automáticamente, sin riesgo de duplicados.
 
-2.  **Validación de entradas** — Se agregó un método `LeerEntero()` que valida todos los inputs numéricos con `int.TryParse`. Si el usuario escribe algo inválido, el programa avisa y no crashea.
+2. **Validación de entradas** — El método `LeerEntero()` valida todos los inputs numéricos con `int.TryParse`. Si el usuario escribe algo inválido, el programa avisa y no crashea.
 
-## Mejoras planificadas para la presentación final
+3. **Filtrar por tipo** — Al mostrar productos, el usuario puede elegir ver todos, solo electrónicos o solo alimenticios.
 
-Las siguientes funcionalidades serán implementadas antes de la entrega final:
+4. **Persistencia en archivo `.txt`** — Al cerrar el programa se guarda el inventario en `inventario.txt`. Al volver a abrirlo, los datos se cargan automáticamente.
 
-1. **Filtrar búsqueda por tipo** — Se podrá listar solo los productos de una categoría específica (ej: electrónica, alimentos).
+5. **Herencia y polimorfismo** — `ProductoElectronico` y `ProductoAlimenticio` heredan de `Productos` y sobreescriben `ObtenerInfo()` y `ToString()` con su información propia.
 
-2. **Guardar en archivo .txt** — El inventario se guardará en un archivo de texto al cerrar el programa y se cargará automáticamente al iniciar, para que los datos no se pierdan.
+## Funcionalidad no implementada
 
-3. **Realizar ventas** — Se podrá registrar una venta, descontando el stock del producto correspondiente y calculando el total.
-
-4. **Subclases de Productos** — Se crearán subclases como `ProductoElectronico` y `ProductoAlimenticio` con atributos propios, incorporando los pilares de **herencia** y **polimorfismo** de la Programación Orientada a Objetos.
+- **Realizar ventas** — Esta función (descontar stock y calcular el total de una venta) no forma parte de la entrega final.
 
 ---
 

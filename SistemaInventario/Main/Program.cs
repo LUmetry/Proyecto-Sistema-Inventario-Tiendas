@@ -4,8 +4,7 @@ namespace SistemaInventario;
 
 class Program
 {
-    // metodo helper: le pregunta al usuario un numero y lo valida.
-    // si escribe algo que no es numero, avisa y devuelve false.
+
     static bool LeerEntero(string mensaje, out int resultado)
     {
         Console.Write(mensaje);
@@ -17,9 +16,13 @@ class Program
         return true;
     }
 
+    // ruta del archivo donde se guarda el inventario (se crea junto al ejecutable)
+    const string ARCHIVO = "inventario.txt";
+
     static void Main(string[] args)
     {
         Inventario inventario = new Inventario();
+        inventario.CargarDesdeTxt(ARCHIVO); // carga datos guardados al iniciar
         int opcion = 0;
         do
         {
@@ -42,22 +45,55 @@ class Program
             switch (opcion)
             {
                 case 1:
-                    // ya no se pide el id, el sistema lo asigna solo
+                    // primero preguntamos el tipo de producto
+                    Console.WriteLine("¿Qué tipo de producto desea agregar?");
+                    Console.WriteLine("  1. Electrónico");
+                    Console.WriteLine("  2. Alimenticio");
+                    if (!LeerEntero("Tipo: ", out int tipoProd)) break;
+
                     Console.Write("Ingrese el nombre: ");
                     string nombre = Console.ReadLine() ?? "";
-                    Console.Write("Ingrese el tipo: ");
-                    string tipo = Console.ReadLine() ?? "";
-
                     if (!LeerEntero("Ingrese el precio: ", out int precio)) break;
                     if (!LeerEntero("Ingrese la cantidad: ", out int cantidad)) break;
 
-                    inventario.AgregarProd(nombre, tipo, precio, cantidad);
+                    if (tipoProd == 1)
+                    {
+
+                        if (!LeerEntero("Meses de garantía: ", out int garantia)) break;
+                        inventario.AgregarProd(new ProductoElectronico(0, nombre, precio, cantidad, garantia));
+                    }
+                    else if (tipoProd == 2)
+                    {
+
+                        Console.Write("Fecha de vencimiento (ej: 31/12/2025): ");
+                        string fechaVenc = Console.ReadLine() ?? "";
+                        inventario.AgregarProd(new ProductoAlimenticio(0, nombre, precio, cantidad, fechaVenc));
+                    }
+                    else
+                    {
+                        Console.WriteLine("Tipo no válido.\n");
+                        break;
+                    }
+
                     Console.WriteLine("Producto agregado correctamente\n");
                     break;
 
                 case 2:
-                    Console.WriteLine("----- Lista de Productos ----- \n");
-                    inventario.MostrarProd();
+                    Console.WriteLine("----- Mostrar Productos -----\n");
+                    Console.WriteLine("  1. Todos");
+                    Console.WriteLine("  2. Solo Electrónicos");
+                    Console.WriteLine("  3. Solo Alimenticios");
+                    if (!LeerEntero("Filtro: ", out int filtro)) break;
+
+                    Console.WriteLine();
+                    if (filtro == 1)
+                        inventario.MostrarProd();
+                    else if (filtro == 2)
+                        inventario.MostrarProdPorTipo("Electrónico");
+                    else if (filtro == 3)
+                        inventario.MostrarProdPorTipo("Alimenticio");
+                    else
+                        Console.WriteLine("Opción no válida.\n");
                     break;
 
                 case 3:
@@ -67,7 +103,7 @@ class Program
                     if (!LeerEntero("Ingrese la nueva cantidad: ", out int cantidad2)) break;
 
                     Console.WriteLine("\n");
-                    inventario.ActualizarProd(new Productos(id2, "", "", precio2, cantidad2));
+                    inventario.ActualizarProd(id2, precio2, cantidad2);
                     Console.WriteLine("Producto actualizado correctamente\n");
                     break;
 
@@ -76,7 +112,7 @@ class Program
                     if (!LeerEntero("Ingrese el id: ", out int id3)) break;
 
                     Console.WriteLine("\n");
-                    inventario.EliminarProd(new Productos(id3, "", "", 0, 0));
+                    inventario.EliminarProd(id3);
                     Console.WriteLine("Producto eliminado correctamente\n");
                     break;
 
@@ -89,6 +125,7 @@ class Program
                     break;
 
                 case 6:
+                    inventario.GuardarEnTxt(ARCHIVO); // guarda antes de salir
                     Console.WriteLine("Chaíto :c \n");
                     break;
 
