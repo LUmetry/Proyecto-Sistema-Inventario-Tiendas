@@ -1,4 +1,5 @@
 Electronico|1|Asus Tuf F15|44000|3|6
-Electronico|2|Mouse Logitech g503|2000|4|3
+Electronico|2|Mouse Logitech g503|1500|3|3
 Electronico|3|Teléfono samsung S25 plus|36000|5|6
 Alimenticio|4|Papas|50|30|17/4/2026
+Electronico|5|Calculadora|1500|5|1

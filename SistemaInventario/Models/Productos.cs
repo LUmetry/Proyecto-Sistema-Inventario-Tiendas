@@ -2,11 +2,11 @@ namespace SistemaInventario.Models;
 
 
 // lo del autoincremento del id - ready
-// lo de la validaci[on de entradas - ready
-// filtrar busqueda por tipo 
-//guardar en un txt
-// realiar venta
-// crear subclases de productos (agrega herencia y polimorfismo) diferentes productos como producto electronico o alimenticio
+// lo de la validacion de entradas - ready
+// filtrar busqueda por tipo - ready
+//guardar en un txt - ready
+// realiar venta - no agregado
+// crear subclases de productos (agrega herencia y polimorfismo) diferentes productos como producto electronico o alimenticio - ready
 
 
 public class Productos
